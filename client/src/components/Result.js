@@ -1,7 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import DayWeather from './DayWeather';
+import DaylyWeather from './DaylyWeather';
+import HourlyWeather from './HourlyWeather';
+import DetailedWeather from './DetailedWeather';
 
 class Result extends React.Component {
     constructor(props) {
@@ -22,7 +24,7 @@ class Result extends React.Component {
         const lat = this.props.lat;
         const lon = this.props.lon;
 
-        fetch(`/weather/${lat}/${lon}`)
+        fetch(`/weather-daily/${lat}/${lon}`)
             .then(result => result.json())
             .then(result => {
                 // console.log(result)
@@ -42,7 +44,7 @@ class Result extends React.Component {
             const lat = this.props.lat;
             const lon = this.props.lon;
 
-            fetch(`/weather/${lat}/${lon}`)
+            fetch(`/weather-daily/${lat}/${lon}`)
                 .then(result => result.json())
                 .then(result => {
                     // console.log(result)
@@ -61,16 +63,24 @@ class Result extends React.Component {
     }
 
     render() {
-        let result;
-        let isLoaded = this.state.isLoaded;
+        const weather = this.state.weather,
+            scale = this.state.scale;
+
+        let dailyWeaher,
+            hourlyWeather,
+            datailedWeather;
+        
+        const isLoaded = this.state.isLoaded;
         
         if (isLoaded) {
             // console.log(this.state.weather);
-            result = this.state.weather.daily.data.map((dayWeather, index) => (
-                <DayWeather key={index} {...dayWeather} scale={this.state.scale}/>
+            dailyWeaher = weather.daily.data.map((dayWeather, index) => (
+                <DaylyWeather key={index} {...dayWeather} scale={scale}/>
             ))
+
+            datailedWeather = <DetailedWeather {...weather.currently} scale={scale}/>
         } else {
-            result = <h2 className="uk-align-center">Loading...</h2>;
+            dailyWeaher = <h2 className="uk-align-center">Loading...</h2>;
         }
         return(
             <div>
@@ -99,13 +109,23 @@ class Result extends React.Component {
                         &#8457;
                     </label>
                 </div>
+
                 <div className="uk-position-relative" uk-slider="true">
                     <ul className="uk-slider-items uk-child-width-1-3">
-                        {result}
+                        {dailyWeaher}
+                    </ul>                    
+                    <FontAwesomeIcon icon={faArrowLeft} className="uk-position-center-left uk-link" uk-slider-item="previous"/>
+                    <FontAwesomeIcon icon={faArrowRight} className="uk-position-center-right uk-link" uk-slider-item="next"/>
+                </div>
+
+                <div className="uk-position-relative" uk-slider="true">
+                    <ul className="uk-slider-items uk-child-width-1-3">
                     </ul>                    
                     <FontAwesomeIcon icon={faArrowLeft} className="uk-position-center-left uk-position-small uk-hidden-hover" uk-slider-item="previous"/>
                     <FontAwesomeIcon icon={faArrowRight} className="uk-position-center-right uk-position-small uk-hidden-hover" uk-slider-item="next"/>
                 </div>
+                {datailedWeather}
+                
             </div>
         )
 

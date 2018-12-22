@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import '../../node_modules/moment/locale/ru';
+import 'moment/locale/ru';
 
-const DayWeather = props => {
+const DaylyWeather = props => {
     const celsiusToFahrenheit = degrees => degrees * (9 / 5) + 32;
 
     moment.locale('ru');
@@ -25,7 +25,7 @@ const DayWeather = props => {
     // const iconPath = props.day.condition.icon.slice(15);
 
     return (
-        <li className="uk-card uk-card-default">
+        <li className="uk-card uk-card-default uk-card-small">
             <div className="uk-card-title">
                 <p>{dayOfWeek}, {monthDay} {month}</p>
             </div>
@@ -38,4 +38,4 @@ const DayWeather = props => {
     )
 }
 
-export default DayWeather;
+export default DaylyWeather;
