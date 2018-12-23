@@ -1,17 +1,9 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
-export default class Input extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-        }
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange = event => {
+const Input = (props) => {
+    const onChange = event => {
         const value = event.target.value;
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
@@ -20,16 +12,21 @@ export default class Input extends React.Component {
             return [];
         }
 
-        this.props.onChange(event.target.value);
+        props.onChange(event.target.value);
     }
 
-    render() {
-        return (
+    return (
+        <div className="uk-inline uk-margin-top">
+            <span className="uk-form-icon uk-position-center-left">
+                <FontAwesomeIcon icon={faSearch} />
+            </span>
             <input 
-                className="uk-input uk-text-center uk-width-1-3 uk-margin-top" 
-                onChange={this.onChange} 
+                className="uk-input uk-text-center" 
+                onChange={onChange} 
                 placeholder="Type a city name"
             />
-        )
-    }
+        </div>
+    )
 }
+
+export default Input;

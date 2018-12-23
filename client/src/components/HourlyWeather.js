@@ -3,6 +3,7 @@ import moment from 'moment';
 
 const HourlyWeather = props => {
     const celsiusToFahrenheit = degrees => degrees * (9 / 5) + 32;
+    const getTemp = propName => (scale === 'c') ? Math.round(props[propName]) : Math.round(celsiusToFahrenheit(props[propName]));
 
     moment.locale('ru');
     const date = moment(props.time * 1000),
@@ -10,26 +11,27 @@ const HourlyWeather = props => {
 
         scale = props.scale,
 
-        maxTemp = scale === 'c' ? props.temperatureHigh : celsiusToFahrenheit(props.temperatureHigh),
-        maxTempTime = moment(props.temperatureHighTime * 1000),
-        maxTempTimeDisplay = `${maxTempTime.format('HH')}:${maxTempTime.format('mm')}`,
-
-        minTemp = scale === 'c' ? props.temperatureLow : celsiusToFahrenheit(props.temperatureLow),
-        minTempTime = moment(props.temperatureLowTime),
-        minTempTimeDisplay = `${minTempTime.format('HH')}:${minTempTime.format('mm')}`,
+        temperature = getTemp('temperature'),
+        apparentTemperature = getTemp('apparentTemperature'),
 
         condition = props.summary;
 
+    const onClick = () => {
+        props.onClick(props.time);
+    }
+
+    // console.log(props);
         return (
-            <li className="uk-card uk-card-default">
-                <div className="uk-card-title">
+            <li className="uk-card uk-card-small uk-card-hover card-pointer" onClick={onClick}>
+                <time className="uk-card-title">
                     <p>{displayTime}</p>
-                </div>
+                </time>
                 <div className="uk-card-body">
                     <p>{condition}</p>
-                    <p>{Math.round(maxTemp)}{scale} in {maxTempTimeDisplay}</p>
-                    <p>{Math.round(minTemp)}{scale} in {minTempTimeDisplay}</p>
+                    <p>Температура: {temperature} {scale}</p>
+                    <p>Ощущается: {apparentTemperature} {scale}</p>
                 </div>
+                <div className="uk-card-footer uk-link">Подробнее</div>
             </li>
         )
 }

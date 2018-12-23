@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InputForm from './components/InputForm';
 import Result from './components/Result';
+import Footer from './components/Footer';
 import './App.css';
 
 class App extends Component {
@@ -26,16 +27,19 @@ class App extends Component {
   }
 
   render() {
-    const city = this.state.city;
-    const lat = this.state.lat;
-    const lon = this.state.lon;
+    const city = this.state.city,
+      lat = this.state.lat,
+      lon = this.state.lon,
+      dateIsSelect = this.state.dateIsSelect;
     // console.log(this.state.city);
     return (
       <div className="App uk-container uk-margin-auto">
         <InputForm onSuggestionClick={this.onSuggestionClick} />
         <div>
-          {city ? <Result city={this.state.city} lat={lat} lon={lon} /> : null }
+          {city ? <Result city={this.state.city} lat={lat} lon={lon} dateIsSelect={dateIsSelect} onDateClick={this.onDateClick} /> : null }
         </div>
+        
+        <Footer />
       </div>
     );
   }

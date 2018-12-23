@@ -9,6 +9,7 @@ export default class InputForm extends React.Component {
         this.state = {
             suggestions: [],
             city: '',
+            suggestionsVisible: false,
         }
 
         this.onSuggestionClick = this.onSuggestionClick.bind(this);
@@ -18,6 +19,7 @@ export default class InputForm extends React.Component {
     onSuggestionClick = (suggestion, lat, lon) => {
         this.setState({
             city: suggestion,
+            suggestionsVisible: false,
         })
 
         this.props.onSuggestionClick(suggestion, lat, lon);
@@ -30,15 +32,19 @@ export default class InputForm extends React.Component {
             // console.log(result);
             this.setState({
                 suggestions: result,
+                suggestionsVisible: true,
             })
         })
     }
 
     render() {
-        // const city = this.state.city;
-        const suggestions = this.state.suggestions.map((suggestion, index) => (
-            <Suggestion key={index} onClick={this.onSuggestionClick} {...suggestion} />
-        ))
+        let suggestions;
+
+        if (this.state.suggestionsVisible) {
+            suggestions = this.state.suggestions.map((suggestion, index) => (
+                <Suggestion key={index} onClick={this.onSuggestionClick} {...suggestion} />
+            ))
+        }   
 
         return (
             <div className="uk-container-small uk-margin-auto uk-border-rounded">

@@ -24,16 +24,21 @@ const DaylyWeather = props => {
         condition = props.summary;
     // const iconPath = props.day.condition.icon.slice(15);
 
+    const onClick = () => {
+        props.onClick(props.time);
+    }
+
     return (
-        <li className="uk-card uk-card-default uk-card-small">
-            <div className="uk-card-title">
+        <li className="uk-card uk-card-small uk-card-hover card-pointer" onClick={onClick}>
+            <time className="uk-card-title">
                 <p>{dayOfWeek}, {monthDay} {month}</p>
-            </div>
+            </time>
             <div className="uk-card-body">
                 <p>{condition}</p>
                 <p>{Math.round(maxTemp)}{scale} in {maxTempTimeDisplay}</p>
                 <p>{Math.round(minTemp)}{scale} in {minTempTimeDisplay}</p>
             </div>
+            <div className="uk-card-footer uk-link">Подробнее</div>
         </li>
     )
 }

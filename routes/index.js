@@ -31,7 +31,7 @@ router.get('/weather-daily/:lat/:lon', async function(req, res, next) {
 
   const getWeather = async (lat, lon) => {
     try {
-      const response = await axios.get(url + `${lat},${lon}?lang=ru&units=si&exclude=hourly`)
+      const response = await axios.get(url + `${lat},${lon}?lang=ru&units=si&exclude=hourly,flags`)
       const data = response.data;
       return data;
     } catch (error) {
@@ -42,20 +42,20 @@ router.get('/weather-daily/:lat/:lon', async function(req, res, next) {
   res.json(await getWeather(req.params.lat, req.params.lon));
 })
 
-router.get('/weather-hourly/:lat/:lon', async function(req, res, next) {
+router.get('/weather-hourly/:lat/:lon/:time', async function(req, res, next) {
   const url = `https://api.darksky.net/forecast/${config.darksky_key}/`;
 
   const getWeather = async (lat, lon, time) => {
     try {
-      const response = await axios.get(url + `${lat},${lon},${time}?lang=ru&units=si&exclude=daily,currently`)
+      const response = await axios.get(url + `${lat},${lon},${time}?lang=ru&units=si&exclude=daily,currently,flags,`)
       const data = response.data;
-      return data;
+      return data.hourly;
     } catch (error) {
       console.log(error);
     }
   }
 
-  res.json(await getWeather(req.params.lat, req.params.lon));
+  res.json(await getWeather(req.params.lat, req.params.lon, req.params.time));
 })
 
 module.exports = router;
