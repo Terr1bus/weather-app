@@ -12,7 +12,6 @@ export default class Suggestion extends React.Component {
     }
 
     render() {
-        // console.log(this);
         return (
             <li onClick={this.onClick} className="uk-link">
                 {this.props.display_name}

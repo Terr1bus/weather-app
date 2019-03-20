@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var config = require('../config');
+require('dotenv').config();
+
+var DARKSKY_KEY = process.env.DARKSKY_KEY || undefined;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,16 +12,14 @@ router.get('/', function(req, res, next) {
 
 router.get('/city/:value', async function(req, res, next) {
   const url = 'https://nominatim.openstreetmap.org/search?format=json&city=';
-  // console.log(req.params);
 
-  const getCity = async (value) => {
+  const getCity = async value => {
     try {
       const response = await axios.get(url + encodeURI(value));
       const data = response.data;
-      // console.log(data);
       return data;
     } catch (error) {
-      console.log(error);
+      res.json({error: "Error was occured"});
     }
   }
 
@@ -27,15 +27,15 @@ router.get('/city/:value', async function(req, res, next) {
 })
 
 router.get('/weather-daily/:lat/:lon', async function(req, res, next) {
-  const url = `https://api.darksky.net/forecast/${config.darksky_key}/`;
+  const url = `https://api.darksky.net/forecast/${DARKSKY_KEY}/`;
 
   const getWeather = async (lat, lon) => {
     try {
-      const response = await axios.get(url + `${lat},${lon}?lang=ru&units=si&exclude=hourly,flags`)
+      const response = await axios.get(`${url}${lat},${lon}?lang=ru&units=si&exclude=hourly,flags`)
       const data = response.data;
       return data;
     } catch (error) {
-      console.log(error);
+      res.json({error: "Error was occured"});
     }
   }
 
@@ -43,15 +43,15 @@ router.get('/weather-daily/:lat/:lon', async function(req, res, next) {
 })
 
 router.get('/weather-hourly/:lat/:lon/:time', async function(req, res, next) {
-  const url = `https://api.darksky.net/forecast/${config.darksky_key}/`;
+  const url = `https://api.darksky.net/forecast/${DARKSKY_KEY}/`;
 
   const getWeather = async (lat, lon, time) => {
     try {
-      const response = await axios.get(url + `${lat},${lon},${time}?lang=ru&units=si&exclude=daily,currently,flags,`)
+      const response = await axios.get(`${url}${lat},${lon},${time}?lang=ru&units=si&exclude=daily,currently,flags,`)
       const data = response.data;
       return data.hourly;
     } catch (error) {
-      console.log(error);
+      res.json({error: "Error was occured"});
     }
   }
 

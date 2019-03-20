@@ -26,10 +26,9 @@ export default class InputForm extends React.Component {
     }
 
     onInputChange = value => {
-      fetch('/city/' + value)
+      fetch(`/city/${value}`)
         .then(result => result.json())
         .then(result => {
-            // console.log(result);
             this.setState({
                 suggestions: result,
                 suggestionsVisible: true,
@@ -44,7 +43,7 @@ export default class InputForm extends React.Component {
             suggestions = this.state.suggestions.map((suggestion, index) => (
                 <Suggestion key={index} onClick={this.onSuggestionClick} {...suggestion} />
             ))
-        }   
+        }
 
         return (
             <div className="uk-container-small uk-margin-auto uk-border-rounded">

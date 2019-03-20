@@ -35,21 +35,26 @@ class Result extends React.Component {
         fetch(`/weather-daily/${lat}/${lon}`)
             .then(result => result.json())
             .then(result => {
-                // console.log(result)
-                this.setState({ 
-                    dailyIsLoaded: true,
-                    weather: result,
-                })
+                if (result.error) {
+                    this.setState({
+                        error: result.error
+                    })
+                } else {
+                    this.setState({ 
+                        dailyIsLoaded: true,
+                        weather: result,
+                    })
+                }
             });
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.city !== prevProps.city) {
             this.setState({
-                dailyIsLoaded: false,
-                dateIsSelect: false,
-                timeIsSelect: false,
-            })
+              dailyIsLoaded: false,
+              dateIsSelect: false,
+              timeIsSelect: false,
+            });
 
             const lat = this.props.lat,
                 lon = this.props.lon;
@@ -57,11 +62,16 @@ class Result extends React.Component {
             fetch(`/weather-daily/${lat}/${lon}`)
                 .then(result => result.json())
                 .then(result => {
-                    // console.log(result)
+                  if (result.error) {
+                    this.setState({
+                      error: result.error,
+                    });
+                  } else {
                     this.setState({ 
                         dailyIsLoaded: true,
                         weather: result,
                     })
+                  }
                 });
         }
     }
@@ -87,15 +97,20 @@ class Result extends React.Component {
         fetch(`/weather-hourly/${lat}/${lon}/${time}`)
             .then(result => result.json())
             .then(result => {
-                // console.log(result)
+              if (result && result.error) {
+                this.setState({
+                  error: result.error,
+                });
+              } else {
                 this.setState({ 
                     hourlyIsLoaded: true,
                     hourlyWeather: result,
-                })
+                });
+              }
             });
 
     }
-    onHourlyClick = (time) => {
+    onHourlyClick = time => {
         this.setState({
             timeIsSelect: true,
             selectedUnixTime: time,
@@ -126,7 +141,6 @@ class Result extends React.Component {
             month = date.format('MMM');
 
         if (dailyIsLoaded) {
-            // console.log(weather);
             dailyWeaher = weather.daily.data.map((dayWeather, index) => (
                 <DaylyWeather key={index} {...dayWeather} scale={scale} onClick={this.onDateClick}/>
             ))
