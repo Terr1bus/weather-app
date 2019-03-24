@@ -1,12 +1,12 @@
 Weather app
 
+For run application nessesary register on https://darksky.net/dev/register, get private token and put it in .env file in root directory (DARKSKY_KEY=*YOUR_PRIVATE_TOKEN*)
+
 In root directory run `npm i && cd ./client/ && npm i && cd ../`.
 
 For run application in the production mode run `cd client && npm run build && cd ../ && npm start`.
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-File `index.json` in directory `config` contain api token. It must be in secret.
 
 
 
